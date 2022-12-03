@@ -1,6 +1,7 @@
 import React, { useRef, useMemo, useEffect } from 'react';
 import { Marker } from 'react-leaflet';
 import { LatLng } from 'leaflet';
+import isEqual from 'lodash/isEqual';
 
 type PropTypes = {
   markerIcon: L.Icon;
@@ -37,5 +38,5 @@ function DraggableMarker(props: PropTypes) {
   );
 }
 export default React.memo(DraggableMarker, (prev, next) => {
-  return true;
+  return isEqual(prev.position, next.position);
 });

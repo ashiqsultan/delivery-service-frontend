@@ -26,3 +26,10 @@ export const driverMarkerIcon = L.icon({
   popupAnchor: [-3, -20], // point from which the popup should open relative to the iconAnchor
   className: 'marker',
 });
+
+export const socketEvents = {
+  SUBSCRIBE_TO_SHIPMENT: 'SUBSCRIBE_TO_SHIPMENT',
+  SUBSCRIBE_TO_DA: 'SUBSCRIBE_TO_DA',
+  DA_LOCATION_CHANGED: 'DA_LOCATION_CHANGED',
+  LEAVE_ROOM: 'LEAVE_ROOM',
+};
