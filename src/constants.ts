@@ -33,6 +33,7 @@ export const socketEvents = {
   SUBSCRIBE_TO_DA: 'SUBSCRIBE_TO_DA',
   DA_LOCATION_CHANGED: 'DA_LOCATION_CHANGED',
   LEAVE_ROOM: 'LEAVE_ROOM',
+  SHIPMENT_UPDATED: 'SHIPMENT_UPDATED',
 };
 
 export const infoMsgs: Record<DashboardStatus, IInfo> = {

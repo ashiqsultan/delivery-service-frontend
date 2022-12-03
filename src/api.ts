@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { Point } from 'geojson';
 import { API_URL } from './constants';
-import { TokenRes, UserRes } from './types';
+import { TokenRes, UserRes, ShipmentRes } from './types';
 
 const getToken = () => localStorage.getItem('x-access-token') || '';
 
@@ -44,4 +45,22 @@ export const getUserData = async (): Promise<UserRes> => {
   };
   const response = await axios(config);
   return response.data as UserRes;
+};
+
+export const createShipment = async (
+  pickupLocation: Point,
+  dropLocation: Point
+): Promise<ShipmentRes> => {
+  var data = { pickupLocation, dropLocation };
+  var config = {
+    method: 'post',
+    url: `${API_URL}/shipment`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+      'Content-Type': 'application/json',
+    },
+    data: data,
+  };
+  const response = await axios(config);
+  return response.data as ShipmentRes;
 };

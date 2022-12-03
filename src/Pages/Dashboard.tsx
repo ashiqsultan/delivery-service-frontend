@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useReducer,
 } from 'react';
+import { Point } from 'geojson';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import L, { LatLng } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -27,6 +28,7 @@ import {
   ACTIONS,
 } from '../constants';
 import './dashboard.css';
+import { createShipment } from '../api';
 
 const socket = io(API_URL);
 
@@ -121,7 +123,18 @@ const Dashboard = () => {
           };
           dispatch(action);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    // Listens to Shipment updates once subscribed
+    socket.on(socketEvents.SHIPMENT_UPDATED, (data) => {
+      try {
+        console.log({ data });
+      } catch (error) {
+        console.error(error);
+      }
     });
 
     socket.emit(socketEvents.SUBSCRIBE_TO_DA, {
@@ -160,9 +173,28 @@ const Dashboard = () => {
     const action = { type: ACTIONS.PICKUP_SELECTED, payload: {} };
     dispatch(action);
   };
-  const onDropSelected = () => {
-    const action = { type: ACTIONS.DROP_SELECTED, payload: {} };
-    dispatch(action);
+  const onDropSelected = async () => {
+    try {
+      const action = { type: ACTIONS.DROP_SELECTED, payload: {} };
+      await dispatch(action);
+      const pickupPoint: Point = {
+        type: 'Point',
+        coordinates: [state.pickupLocation.lng, state.pickupLocation.lat],
+      };
+      const dropPoint: Point = {
+        type: 'Point',
+        coordinates: [state.dropLocation.lng, state.dropLocation.lat],
+      };
+      // Call API to Create new Shipment
+      const createShipmentOp = await createShipment(pickupPoint, dropPoint);
+      const shipment = createShipmentOp.data;
+      // Subscribe to MongoDB Change Stream via Socket io for the created Shipment
+      socket.emit(socketEvents.SUBSCRIBE_TO_SHIPMENT, {
+        shipmentId: shipment._id,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const ButtonNewDelivery = () => {
