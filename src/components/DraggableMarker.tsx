@@ -44,6 +44,12 @@ function DraggableMarker(props: PropTypes) {
   );
 }
 export default React.memo(DraggableMarker, (prev, next) => {
+  if (
+    prev.markerName === 'Driver-marker' ||
+    next.markerName === 'Driver-marker'
+  ) {
+    return false;
+  }
   return (
     isEqual(prev.position, next.position) ||
     prev.isDraggable === next.isDraggable
