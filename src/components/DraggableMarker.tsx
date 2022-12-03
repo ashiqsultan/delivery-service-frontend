@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useEffect } from 'react';
-import { Marker } from 'react-leaflet';
+import { Marker, Popup } from 'react-leaflet';
 import { LatLng } from 'leaflet';
 import isEqual from 'lodash/isEqual';
 
@@ -7,20 +7,24 @@ type PropTypes = {
   markerIcon: L.Icon;
   isDraggable: boolean;
   position: LatLng;
-  setPosition: Function;
+  setPosition?: Function;
   markerName: string;
+  popupMsg?: string;
 };
 function DraggableMarker(props: PropTypes) {
+  const markerRef = useRef(null);
+
   useEffect(() => {
     console.log('DraggableMarker Rerendered', props.markerName);
-  });
-  const markerRef = useRef(null);
+    const marker = markerRef.current;
+    if (marker != null) marker.openPopup();
+  }, []);
+
   const eventHandlers = useMemo(
     () => ({
       dragend() {
         const marker = markerRef.current;
         if (marker != null) {
-          console.log(marker.getLatLng());
           props.setPosition(marker.getLatLng());
         }
       },
@@ -34,9 +38,14 @@ function DraggableMarker(props: PropTypes) {
       position={props.position}
       ref={markerRef}
       icon={props.markerIcon}
-    ></Marker>
+    >
+      {props.popupMsg && <Popup>{props.popupMsg}</Popup>}
+    </Marker>
   );
 }
 export default React.memo(DraggableMarker, (prev, next) => {
-  return isEqual(prev.position, next.position);
+  return (
+    isEqual(prev.position, next.position) ||
+    prev.isDraggable === next.isDraggable
+  );
 });

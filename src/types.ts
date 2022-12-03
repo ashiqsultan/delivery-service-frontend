@@ -1,4 +1,5 @@
 import { Point } from 'geojson';
+import { LatLng } from 'leaflet';
 
 export interface AppRes {
   data: any;
@@ -41,4 +42,32 @@ export interface UserRes extends AppRes {
 
 export interface TokenRes extends AppRes {
   data: { token: string };
+}
+
+export enum DashboardStatus {
+  NO_SHIPMENT = 'NO_SHIPMENT',
+  SHIPMENT_INITIATED = 'SHIPMENT_INITIATED',
+  PICKUP_SELECTED = 'PICKUP_SELECTED',
+  DROP_SELECTED = 'DROP_SELECTED',
+  SEARCHING_ASSOCIATES = 'SEARCHING_ASSOCIATES',
+  ASSOCIATE_ASSIGNED = 'ASSOCIATE_ASSIGNED',
+}
+export interface IInfo {
+  title: string;
+  msg: string;
+}
+export interface State {
+  pickupLocation: LatLng;
+  isPickupDraggable: boolean;
+  isShowPickupMarker: boolean;
+  dropLocation: LatLng;
+  isDropDraggable: boolean;
+  isShowDropMarker: boolean;
+  driverLocation: LatLng | null;
+  dashboardStatus: DashboardStatus;
+  info: IInfo;
+}
+export interface IAction {
+  type: string;
+  payload?: any;
 }
