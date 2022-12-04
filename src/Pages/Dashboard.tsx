@@ -34,6 +34,7 @@ import {
 } from '../constants';
 import './dashboard.css';
 import { createShipment } from '../api';
+import GifInfo from '../components/GifInfo';
 
 const socket = io(API_URL);
 
@@ -284,7 +285,7 @@ const Dashboard = () => {
         <div>
           <ShipmentInfo dashboardStatus={state.dashboardStatus} />
         </div>
-        {/* New Delivery button */}
+        {/* Action button */}
         <div className='center-button'>
           {state.dashboardStatus === DashboardStatus.NO_SHIPMENT && (
             <ButtonNewDelivery />
@@ -295,6 +296,10 @@ const Dashboard = () => {
           {state.dashboardStatus === DashboardStatus.PICKUP_SELECTED && (
             <ButtonConfirmDrop />
           )}
+        </div>
+        {/* Gif Info */}
+        <div className='center-button'>
+          <GifInfo dashboardStatus={state.dashboardStatus} />
         </div>
       </div>
       <div className='col-2'>
