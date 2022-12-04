@@ -4,7 +4,7 @@ export const API_URL = 'http://localhost:5000';
 
 import iconPickup from './assets/icon_pickup.svg';
 import iconDrop from './assets/icon_drop.svg';
-import iconDriver from './assets/icon_delivery_associate.svg';
+import iconDriver from './assets/truck.svg';
 import { IInfo, DashboardStatus } from './types';
 
 export const pickupMarkerIcon = L.icon({
@@ -23,7 +23,7 @@ export const dropMarkerIcon = L.icon({
 
 export const driverMarkerIcon = L.icon({
   iconUrl: iconDriver,
-  iconSize: [50, 50], // size of the icon
+  iconSize: [35, 35], // size of the icon
   popupAnchor: [-3, -20], // point from which the popup should open relative to the iconAnchor
   className: 'marker',
 });
