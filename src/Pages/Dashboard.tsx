@@ -29,7 +29,6 @@ import {
   driverMarkerIcon,
   API_URL,
   socketEvents,
-  infoMsgs,
   mapInitialViewProps,
   ACTIONS,
 } from '../constants';
@@ -46,7 +45,6 @@ const initialState: State = {
   isDropDraggable: false,
   isShowDropMarker: false,
   driverLocation: null,
-  info: infoMsgs[DashboardStatus.NO_SHIPMENT],
   dashboardStatus: DashboardStatus.NO_SHIPMENT,
 };
 
@@ -58,7 +56,6 @@ function reducer(state: State, action: IAction): State {
         isPickupDraggable: true,
         isShowPickupMarker: true,
         dashboardStatus: DashboardStatus.SHIPMENT_INITIATED,
-        info: infoMsgs[DashboardStatus.SHIPMENT_INITIATED],
       };
     case ACTIONS.SET_DRIVER_LOCATION:
       return {
@@ -82,44 +79,37 @@ function reducer(state: State, action: IAction): State {
         isDropDraggable: true,
         isShowDropMarker: true,
         dashboardStatus: DashboardStatus.PICKUP_SELECTED,
-        info: infoMsgs[DashboardStatus.PICKUP_SELECTED],
       };
     case ACTIONS.DROP_SELECTED:
       return {
         ...state,
         isDropDraggable: false,
         dashboardStatus: DashboardStatus.DROP_SELECTED,
-        info: infoMsgs[DashboardStatus.DROP_SELECTED],
       };
     case ACTIONS.ASSOCIATE_ASSIGNED:
       return {
         ...state,
         dashboardStatus: DashboardStatus.ASSOCIATE_ASSIGNED,
-        info: infoMsgs[DashboardStatus.ASSOCIATE_ASSIGNED],
       };
     case ACTIONS.PICKUP_LOCATION_REACHED:
       return {
         ...state,
         dashboardStatus: DashboardStatus.PICKUP_LOCATION_REACHED,
-        info: infoMsgs[DashboardStatus.PICKUP_LOCATION_REACHED],
       };
     case ACTIONS.TRANSPORTING:
       return {
         ...state,
         dashboardStatus: DashboardStatus.TRANSPORTING,
-        info: infoMsgs[DashboardStatus.TRANSPORTING],
       };
     case ACTIONS.DROP_LOCATION_REACHED:
       return {
         ...state,
         dashboardStatus: DashboardStatus.DROP_LOCATION_REACHED,
-        info: infoMsgs[DashboardStatus.DROP_LOCATION_REACHED],
       };
     case ACTIONS.DELIVERED:
       return {
         ...state,
         dashboardStatus: DashboardStatus.DELIVERED,
-        info: infoMsgs[DashboardStatus.DELIVERED],
       };
     default:
       console.log('default action');
@@ -292,7 +282,7 @@ const Dashboard = () => {
         <UserInfo />
         {/* Shipment info */}
         <div>
-          <ShipmentInfo title={state.info.title} message={state.info.msg} />
+          <ShipmentInfo dashboardStatus={state.dashboardStatus} />
         </div>
         {/* New Delivery button */}
         <div className='center-button'>

@@ -70,7 +70,6 @@ export interface State {
   isShowDropMarker: boolean;
   driverLocation: LatLng | null;
   dashboardStatus: DashboardStatus;
-  info: IInfo;
 }
 export interface IAction {
   type: string;
