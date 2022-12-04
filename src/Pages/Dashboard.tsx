@@ -282,11 +282,11 @@ const Dashboard = () => {
       <div className='col-1'>
         <UserInfo />
         {/* Shipment info */}
-        <div>
+        <div className='flex-center'>
           <ShipmentInfo dashboardStatus={state.dashboardStatus} />
         </div>
         {/* Action button */}
-        <div className='center-button'>
+        <div className='flex-center'>
           {state.dashboardStatus === DashboardStatus.NO_SHIPMENT && (
             <ButtonNewDelivery />
           )}
@@ -298,7 +298,7 @@ const Dashboard = () => {
           )}
         </div>
         {/* Gif Info */}
-        <div className='center-button'>
+        <div className='flex-center'>
           <GifInfo dashboardStatus={state.dashboardStatus} />
         </div>
       </div>
