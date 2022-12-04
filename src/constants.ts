@@ -55,6 +55,23 @@ export const infoMsgs: Record<DashboardStatus, IInfo> = {
     title: 'Delivery Associate Assigned',
     msg: 'An Associate has been assigned to handle your delivery and will soon reach your pickup location',
   },
+  PICKUP_LOCATION_REACHED: {
+    title: 'Associate reached Pickup location',
+    msg: 'Our Associate has arrived at the pickup location',
+  },
+  TRANSPORTING: {
+    title: 'Transporting',
+    msg: 'Your package is getting delivered',
+  },
+  DROP_LOCATION_REACHED: {
+    title: 'Reached Delivery location',
+    msg: 'Associate reached delivery location',
+  },
+  DELIVERED: {
+    title: 'Delivered',
+    msg: 'The package has been delivered successfully',
+  },
+  CANCELLED: { title: '', msg: '' },
 };
 
 export const ACTIONS = {
@@ -63,8 +80,7 @@ export const ACTIONS = {
   SET_DRIVER_LOCATION: 'SET_DRIVER_LOCATION',
   SET_PICKUP_LOCATION: 'SET_PICKUP_LOCATION',
   SET_DROP_LOCATION: 'SET_DROP_LOCATION',
-  PICKUP_SELECTED: 'PICKUP_SELECTED',
-  DROP_SELECTED: 'DROP_SELECTED',
+  ...DashboardStatus,
 };
 
 export const mapInitialViewProps: {

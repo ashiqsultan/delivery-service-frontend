@@ -16,7 +16,13 @@ import Button from '@mui/material/Button';
 import UserInfo from '../components/UserInfo';
 import DraggableMarker from '../components/DraggableMarker';
 import ShipmentInfo from '../components/ShipmentInfo';
-import { DashboardStatus, State, IAction } from '../types';
+import {
+  DashboardStatus,
+  State,
+  IAction,
+  IShipment,
+  ShipmentStatus,
+} from '../types';
 import {
   pickupMarkerIcon,
   dropMarkerIcon,
@@ -85,11 +91,51 @@ function reducer(state: State, action: IAction): State {
         dashboardStatus: DashboardStatus.DROP_SELECTED,
         info: infoMsgs[DashboardStatus.DROP_SELECTED],
       };
+    case ACTIONS.ASSOCIATE_ASSIGNED:
+      return {
+        ...state,
+        dashboardStatus: DashboardStatus.ASSOCIATE_ASSIGNED,
+        info: infoMsgs[DashboardStatus.ASSOCIATE_ASSIGNED],
+      };
+    case ACTIONS.PICKUP_LOCATION_REACHED:
+      return {
+        ...state,
+        dashboardStatus: DashboardStatus.PICKUP_LOCATION_REACHED,
+        info: infoMsgs[DashboardStatus.PICKUP_LOCATION_REACHED],
+      };
+    case ACTIONS.TRANSPORTING:
+      return {
+        ...state,
+        dashboardStatus: DashboardStatus.TRANSPORTING,
+        info: infoMsgs[DashboardStatus.TRANSPORTING],
+      };
+    case ACTIONS.DROP_LOCATION_REACHED:
+      return {
+        ...state,
+        dashboardStatus: DashboardStatus.DROP_LOCATION_REACHED,
+        info: infoMsgs[DashboardStatus.DROP_LOCATION_REACHED],
+      };
+    case ACTIONS.DELIVERED:
+      return {
+        ...state,
+        dashboardStatus: DashboardStatus.DELIVERED,
+        info: infoMsgs[DashboardStatus.DELIVERED],
+      };
     default:
       console.log('default action');
       return state;
   }
 }
+
+const shipmentStatusActionMapper: Record<ShipmentStatus, IAction> = {
+  requested: { type: 'Default' },
+  deliveryAssociateAssigned: { type: ACTIONS.ASSOCIATE_ASSIGNED },
+  pickupLocationReached: { type: ACTIONS.PICKUP_LOCATION_REACHED },
+  transporting: { type: ACTIONS.TRANSPORTING },
+  dropLocationReached: { type: ACTIONS.DROP_LOCATION_REACHED },
+  delivered: { type: ACTIONS.DELIVERED },
+  cancelled: { type: ACTIONS.CANCELLED },
+};
 const Dashboard = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -129,16 +175,22 @@ const Dashboard = () => {
     });
 
     // Listens to Shipment updates once subscribed
-    socket.on(socketEvents.SHIPMENT_UPDATED, (data) => {
+    socket.on(socketEvents.SHIPMENT_UPDATED, (data: IShipment) => {
       try {
         console.log({ data });
+        // Subscribe to delivery associate
+        if (data.deliveryAssociateId) {
+          socket.emit(socketEvents.SUBSCRIBE_TO_DA, {
+            deliveryAssociateId: data.deliveryAssociateId,
+          });
+        }
+        // Dispatch Action on Shipment status change
+        if (data.status) {
+          dispatch(shipmentStatusActionMapper[data.status]);
+        }
       } catch (error) {
         console.error(error);
       }
-    });
-
-    socket.emit(socketEvents.SUBSCRIBE_TO_DA, {
-      deliveryAssociateId: '637fb7777b67e07ca8702543',
     });
 
     return () => {
