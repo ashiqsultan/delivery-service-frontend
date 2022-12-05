@@ -40,6 +40,7 @@ export default function SignUp() {
     const password = data.get('password');
     const fullname = data.get('fullname');
     if (email && fullname && password) {
+      // @ts-ignore
       const createdUser = await createUser(email, fullname, password);
       if (!createdUser.isError && createdUser.data._id) {
         setIsUserCreated(true);

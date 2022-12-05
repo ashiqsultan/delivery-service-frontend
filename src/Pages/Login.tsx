@@ -41,6 +41,7 @@ export default function SignIn() {
     const password = data.get('password');
     // Login api
     if (email && password) {
+      // @ts-ignore
       const loginOp = await login(email, password);
       const token = loginOp.data.token;
       localStorage.setItem('x-access-token', token);

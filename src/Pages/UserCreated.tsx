@@ -2,6 +2,7 @@ import Snackbar from '@mui/material/Snackbar';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 
+// @ts-ignore
 const UserCreated = ({ isOpen }) => {
   const navigate = useNavigate();
   const action = (

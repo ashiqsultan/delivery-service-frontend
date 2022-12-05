@@ -17,6 +17,7 @@ function DraggableMarker(props: PropTypes) {
   useEffect(() => {
     console.log('DraggableMarker Rerendered', props.markerName);
     const marker = markerRef.current;
+    // @ts-ignore
     if (marker != null) marker.openPopup();
   }, []);
 
@@ -25,6 +26,7 @@ function DraggableMarker(props: PropTypes) {
       dragend() {
         const marker = markerRef.current;
         if (marker != null) {
+          // @ts-ignore
           props.setPosition(marker.getLatLng());
         }
       },

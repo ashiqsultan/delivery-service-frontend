@@ -1,6 +1,7 @@
 import L from 'leaflet';
 
-export const API_URL = 'http://localhost:5000';
+// export const API_URL = 'http://localhost:5000';
+export const API_URL = 'https://delivery-service-backend.onrender.com';
 
 import iconPickup from './assets/icon_pickup.svg';
 import iconDrop from './assets/icon_drop.svg';
